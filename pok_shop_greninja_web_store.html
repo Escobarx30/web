@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PokéShop Greninja | Tienda Oficial de Cartas Pokémon TCG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tinta: #f0f4f8;
+    --fondo: #0e1726;
+    --panel: #162238;
+    --panel-hover: #1f2e4a;
+    --azul: #00a2ff;
+    --azul-hover: #0088db;
+    --rosa: #ff4081;
+    --rosa-hover: #e03670;
+    --amarillo: #ffcb05;
+    --verde: #00e676;
+    --gris: #94a3b8;
+    --linea: #233554;
+    --radio: 14px;
+    --sombra: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--fondo); color: var(--tinta); line-height: 1.55; }
+  h1, h2, h3, h4, .logo { font-family: "Sora", system-ui, sans-serif; line-height: 1.2; }
+  a { color: inherit; text-decoration: none; }
+  button, input, select, textarea { font-family: inherit; }
+  :focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }
+
+  .contenedor { width: min(1240px, 92%); margin-inline: auto; }
+
+  /* 1. Barra de Anuncios con Temporizador */
+  .anuncio-bar { background: linear-gradient(90deg, #0b132b, var(--rosa), var(--azul), #0b132b); background-size: 300% 300%; animation: gradientShift 8s ease infinite; color: #fff; text-align: center; padding: 9px 14px; font-size: 0.85rem; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
+  @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+  .timer-badge { background: rgba(0,0,0,0.4); padding: 3px 8px; border-radius: 6px; font-family: "Sora", monospace; color: var(--amarillo); border: 1px solid rgba(255,203,5,0.3); }
+
+  /* 2. Encabezado */
+  header { background: rgba(22, 34, 56, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--linea); position: sticky; top: 0; z-index: 90; }
+  .barra { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 16px; }
+  .logo { font-weight: 800; font-size: 1.6rem; color: #fff; display: flex; align-items: center; gap: 8px; }
+  .logo span { color: var(--rosa); }
+  nav { display: flex; gap: 20px; align-items: center; }
+  nav a { font-weight: 600; color: var(--gris); transition: color .2s; font-size: 0.95rem; }
+  nav a:hover { color: var(--azul); }
+  .acciones-header { display: flex; gap: 10px; align-items: center; }
+  .btn-icon-badge { background: var(--panel-hover); border: 1px solid var(--linea); color: var(--tinta); padding: 8px 14px; border-radius: 999px; font-size: 0.9rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; }
+  .btn-icon-badge:hover { border-color: var(--azul); transform: translateY(-1px); }
+  .badge-num { background: var(--rosa); color: #fff; border-radius: 999px; padding: 2px 7px; font-size: 0.75rem; }
+
+  /* Hero Section */
+  .hero { background: linear-gradient(135deg, #0b132b 0%, #1c2541 50%, rgba(0,162,255,0.15) 100%); padding: 60px 0; border-bottom: 1px solid var(--linea); position: relative; overflow: hidden; }
+  .hero .contenedor { display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; }
+  .hero h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; }
+  .hero h1 span { color: var(--amarillo); }
+  .hero p { margin: 18px 0 28px; color: var(--gris); font-size: 1.1rem; max-width: 52ch; }
+  .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+  
+  .boton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--azul); color: #fff; border: 0; padding: 12px 24px; border-radius: 999px; font: 700 0.95rem "Sora", sans-serif; cursor: pointer; transition: all .2s; box-shadow: 0 4px 14px rgba(0,162,255,0.3); }
+  .boton:hover { background: var(--azul-hover); transform: translateY(-2px); }
+  .boton.rosa { background: var(--rosa); box-shadow: 0 4px 14px rgba(255,64,129,0.3); }
+  .boton.rosa:hover { background: var(--rosa-hover); }
+  .boton.claro { background: transparent; border: 2px solid var(--linea); color: var(--tinta); box-shadow: none; }
+  .boton.claro:hover { background: rgba(255,255,255,.05); border-color: var(--azul); }
+  .boton.sm { padding: 7px 14px; font-size: 0.85rem; }
+
+  .hero-img-wrap { text-align: center; position: relative; }
+  .hero-img-wrap img { width: 100%; max-width: 320px; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.7)); animation: flotar 3.5s ease-in-out infinite; }
+  @keyframes flotar { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
+
+  /* Global Section Styles */
+  section { padding: 60px 0; border-bottom: 1px solid var(--linea); }
+  .titulo { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 6px; }
+  .subtitulo { color: var(--gris); margin-bottom: 28px; }
+
+  /* 3 & 4. Buscador, Filtros y Ordenamiento */
+  .controles-tienda { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 20px; margin-bottom: 30px; display: grid; gap: 16px; }
+  .linea-superior-filtros { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  
+  .search-wrapper { position: relative; flex: 1; min-width: 260px; }
+  .search-wrapper input { width: 100%; background: #0e1726; border: 2px solid var(--linea); color: var(--tinta); padding: 11px 16px 11px 40px; border-radius: 10px; font-size: 0.95rem; }
+  .search-wrapper input:focus { border-color: var(--azul); outline: none; }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gris); }
+  .sugerencias-box { position: absolute; top: 105%; left: 0; right: 0; background: var(--panel); border: 1px solid var(--linea); border-radius: 10px; z-index: 20; max-height: 200px; overflow-y: auto; display: none; box-shadow: var(--sombra); }
+  .sugerencia-item { padding: 10px 14px; cursor: pointer; font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .sugerencia-item:hover { background: var(--panel-hover); color: var(--azul); }
+
+  .filtros-cats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filtro-btn { border: 2px solid var(--linea); background: #0e1726; padding: 8px 16px; border-radius: 999px; font-weight: 600; cursor: pointer; color: var(--gris); font-size: 0.88rem; transition: all .2s; }
+  .filtro-btn:hover { border-color: var(--azul); color: #fff; }
+  .filtro-btn.activo { background: var(--azul); border-color: var(--azul); color: #fff; }
+
+  .rango-precio { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--gris); flex-wrap: wrap; }
+  .rango-precio input { width: 90px; background: #0e1726; border: 1px solid var(--linea); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; }
+
+  /* 5. Grid de Productos */
+  .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
+  .card-producto { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); overflow: hidden; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s, border-color .25s; position: relative; }
+  .card-producto:hover { transform: translateY(-5px); box-shadow: 0 14px 30px rgba(0,162,255,0.18); border-color: var(--azul); }
+  
+  .badge-top { position: absolute; top: 12px; left: 12px; z-index: 2; display: flex; gap: 6px; flex-direction: column; }
+  .tag { background: rgba(0, 162, 255, 0.2); color: var(--azul); font-size: 0.72rem; font-weight: 800; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 162, 255, 0.4); text-transform: uppercase; }
+  .tag.rareza { background: rgba(255, 64, 129, 0.2); color: var(--rosa); border-color: rgba(255, 64, 129, 0.4); }
+
+  .btn-wishlist { position: absolute; top: 12px; right: 12px; z-index: 2; background: rgba(14,23,38,0.7); border: 1px solid var(--linea); color: var(--gris); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; transition: all .2s; }
+  .btn-wishlist:hover, .btn-wishlist.activa { color: var(--rosa); border-color: var(--rosa); background: var(--panel); }
+
+  .card-foto { height: 250px; background: #0b132b; display: grid; place-items: center; padding: 20px; overflow: hidden; position: relative; }
+  .card-foto img { max-height: 100%; max-width: 100%; object-fit: contain; transition: transform .3s; }
+  .card-producto:hover .card-foto img { transform: scale(1.06); }
+
+  .card-body { padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card-cat { font-size: 0.75rem; color: var(--rosa); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-titulo { font-size: 1.05rem; font-weight: 700; color: #fff; }
+  .card-stock { font-size: 0.8rem; color: var(--verde); font-weight: 600; }
+  .card-precio { font: 800 1.4rem "Sora", sans-serif; color: var(--amarillo); margin-top: auto; padding-top: 6px; }
+  
+  .card-acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+
+  /* 6. Carrito Lateral (Sidebar Drawer) */
+  .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .drawer-overlay.activo { opacity: 1; pointer-events: auto; }
+  
+  .drawer-carrito { position: fixed; top: 0; right: 0; width: min(440px, 100vw); height: 100vh; background: var(--panel); border-left: 1px solid var(--linea); z-index: 101; transform: translateX(100%); transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; }
+  .drawer-overlay.activo .drawer-carrito { transform: translateX(0); }
+
+  .drawer-header { padding: 20px; border-bottom: 1px solid var(--linea); display: flex; justify-content: space-between; align-items: center; }
+  .btn-cerrar { background: transparent; border: 0; color: var(--gris); font-size: 1.5rem; cursor: pointer; padding: 4px; }
+  .btn-cerrar:hover { color: #fff; }
+
+  .drawer-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .item-carrito { display: flex; gap: 14px; background: #0e1726; border: 1px solid var(--linea); padding: 12px; border-radius: 10px; align-items: center; }
+  .item-carrito img { width: 50px; height: 70px; object-fit: contain; }
+  .item-info { flex: 1; }
+  .item-title { font-size: 0.9rem; font-weight: 700; color: #fff; }
+  .item-price { font-size: 0.9rem; color: var(--amarillo); font-weight: 700; }
+  .controles-cant { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .btn-cant { background: var(--panel); border: 1px solid var(--linea); color: #fff; width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-weight: 700; }
+  .btn-cant:hover { border-color: var(--azul); }
+
+  .drawer-footer { padding: 20px; border-top: 1px solid var(--linea); background: #0e1726; display: grid; gap: 12px; }
+  .linea-resumen { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--gris); }
+  .linea-resumen.total { font-size: 1.15rem; font-weight: 800; color: #fff; border-top: 1px solid var(--linea); padding-top: 10px; }
+
+  .coupon-box { display: flex; gap: 8px; }
+  .coupon-box input { flex: 1; background: var(--panel); border: 1px solid var(--linea); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; }
+
+  /* 7. Simulador PSA / Evaluador */
+  .simulador-box { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .sim-form { display: grid; gap: 16px; }
+  .sim-resultado { background: #0e1726; border: 2px dashed var(--azul); border-radius: var(--radio); padding: 24px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 220px; }
+  .val-destacado { font-size: 2.2rem; font-weight: 800; color: var(--verde); font-family: "Sora", sans-serif; }
+
+  /* 8. Comparador de Cartas */
+  .comparador-selects { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .tabla-comparativa { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: var(--radio); overflow: hidden; border: 1px solid var(--linea); }
+  .tabla-comparativa th, .tabla-comparativa td { padding: 14px 18px; text-align: center; border-bottom: 1px solid var(--linea); font-size: 0.95rem; }
+  .tabla-comparativa th { background: #0e1726; color: var(--gris); font-weight: 700; }
+  .tabla-comparativa td:first-child { text-align: left; font-weight: 700; color: var(--azul); background: rgba(0,162,255,0.03); }
+
+  /* 9. Inspección de Carta */
+  #caracteristicas { background: #0b132b; }
+  .detalle-grid { display: grid; grid-template-columns: 340px 1fr; gap: 40px; align-items: center; background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 32px; }
+  .detalle-foto { background: #0e1726; border-radius: var(--radio); height: 360px; display: grid; place-items: center; padding: 20px; border: 1px solid var(--linea); }
+  .detalle-foto img { max-height: 100%; object-fit: contain; }
+  .table-specs { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .table-specs th, .table-specs td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--linea); font-size: 0.95rem; }
+  .table-specs th { width: 35%; color: var(--gris); font-weight: 600; }
+
+  /* 10. Reseñas */
+  .grid-resenas { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
+  .card-resena { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .estrellas { color: var(--amarillo); font-size: 1.1rem; }
+
+  /* 11 & 12. Ayuda, Ticket y VIP */
+  .ayuda-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 36px; align-items: start; }
+  .opciones-contacto { display: grid; gap: 14px; }
+  .card-contacto { background: var(--panel); border: 1px solid var(--linea); border-left: 5px solid var(--azul); border-radius: var(--radio); padding: 16px 18px; }
+  
+  details { background: var(--panel); border: 1px solid var(--linea); border-radius: 10px; padding: 14px 18px; margin-top: 10px; }
+  summary { cursor: pointer; font-weight: 700; color: #fff; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::after { content: "＋"; color: var(--azul); font-weight: 800; }
+  details[open] summary::after { content: "－"; color: var(--rosa); }
+  details p { margin-top: 10px; color: var(--gris); font-size: 0.95rem; }
+
+  form { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 28px; display: grid; gap: 16px; }
+  label { font-weight: 600; display: grid; gap: 6px; font-size: .92rem; color: var(--tinta); }
+  input, select, textarea { font: inherit; padding: 11px 14px; border: 2px solid var(--linea); border-radius: 10px; background: #0e1726; color: var(--tinta); }
+  input:focus, select:focus, textarea:focus { border-color: var(--azul); outline: none; }
+  textarea { min-height: 100px; resize: vertical; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .msg-error { color: #ff5252; font-size: 0.82rem; min-height: 1.1em; }
+  
+  .box-confirmacion { display: none; background: rgba(0,230,118,0.12); border: 1px solid rgba(0,230,118,0.4); padding: 18px; border-radius: 10px; color: var(--verde); font-size: 0.95rem; }
+
+  .vip-banner { background: linear-gradient(135deg, var(--panel), #0b132b); border: 1px solid var(--linea); border-radius: var(--radio); padding: 40px; text-align: center; margin-top: 40px; position: relative; overflow: hidden; }
+  .vip-banner::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--azul), var(--rosa)); }
+
+  /* Modales Genéricos */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(6px); z-index: 200; display: grid; place-items: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .modal-overlay.activo { opacity: 1; pointer-events: auto; }
+  .modal-card { background: var(--panel); border: 1px solid var(--linea); border-radius: var(--radio); width: min(520px, 100%); padding: 30px; position: relative; box-shadow: var(--sombra); }
+
+  footer { background: #070c18; color: var(--gris); text-align: center; padding: 36px 0; font-size: .9rem; border-top: 1px solid var(--linea); }
+
+  @media (max-width: 860px) {
+    .hero .contenedor, .simulador-box, .detalle-grid, .ayuda-layout, .form-row { grid-template-columns: 1fr; }
+    .hero-img-wrap { display: none; }
+    .comparador-selects { grid-template-columns: 1fr; }
+    nav { display: none; } /* Ocultar menú en móvil para simplificar */
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. Barra de Anuncios con Oferta Flash -->
+<div class="anuncio-bar">
+  <span>⚡ ¡OFERTA FLASH GRENINJA! 15% DE DESCUENTO EN CARTAS SELECCIONADAS ⚡</span>
+  <span class="timer-badge">LA OFERTA TERMINA EN: <span id="flash-clock">05:42:19</span></span>
+</div>
+
+<!-- 2. Encabezado Principal -->
+<header>
+  <div class="contenedor barra">
+    <a class="logo" href="#inicio">🐸 Poké<span>Shop</span></a>
+    <nav aria-label="Navegación principal">
+      <a href="#productos">Catálogo</a>
+      <a href="#simulador">Tasador PSA</a>
+      <a href="#comparador">Comparador</a>
+      <a href="#caracteristicas">Inspección</a>
+      <a href="#resenas">Reseñas</a>
+      <a href="#ayuda">Soporte</a>
+    </nav>
+    <div class="acciones-header">
+      <button class="btn-icon-badge" id="btn-wishlist-toggle" title="Ver Lista de Deseos">
+        ❤️ Wishlist <span class="badge-num" id="wishlist-count">0</span>
+      </button>
+      <button class="btn-icon-badge" id="btn-carrito-toggle" title="Ver Carrito de Compras">
+        🛒 Carrito <span class="badge-num" id="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero Section -->
+  <div class="hero" id="inicio">
+    <div class="contenedor">
+      <div>
+        <h1>Cartas Pokémon Raras & <span>Coleccionables PSA</span></h1>
+        <p>Tu tienda especialista en México. Cartas Ultra Raras graduadas, Booster Boxes selladas y garantía de autenticidad del 100%.</p>
+        <div class="cta-group">
+          <a class="boton rosa" href="#productos">Ver Catálogo Completo</a>
+          <a class="boton claro" href="#simulador">Evaluar mi Carta</a>
+        </div>
+      </div>
+      <div class="hero-img-wrap">
+        <img src="https://images.pokemontcg.io/sv3pt5/198_hires.png" alt="Greninja ex SIR Carta Especial">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3, 4 & 5. Catálogo, Buscador y Filtros -->
+  <section id="productos">
+    <div class="contenedor">
+      <h2 class="titulo">Catálogo Oficial TCG</h2>
+      <p class="subtitulo">Explora cartas graduadas, sobres y artículos de colección con entrega inmediata.</p>
+
+      <div class="controles-tienda">
+        <div class="linea-superior-filtros">
+          <!-- Buscador con Sugerencias -->
+          <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="input-buscar" placeholder="Buscar por nombre de Pokémon, edición..." autocomplete="off">
+            <div class="sugerencias-box" id="sugerencias-box"></div>
+          </div>
+
+          <!-- Ordenamiento -->
+          <select id="select-orden">
+            <option value="defecto">Ordenar por: Relevancia</option>
+            <option value="precio-asc">Precio: Menor a Mayor</option>
+            <option value="precio-desc">Precio: Mayor a Menor</option>
+            <option value="nombre">Nombre (A-Z)</option>
+          </select>
+        </div>
+
+        <div class="linea-superior-filtros">
+          <!-- Categorías Dinámicas -->
+          <div class="filtros-cats" id="filtros-cats"></div>
+
+          <!-- Rango de Precios -->
+          <div class="rango-precio">
+            <span>Precio:</span>
+            <input type="number" id="precio-min" placeholder="Mín $">
+            <span>-</span>
+            <input type="number" id="precio-max" placeholder="Máx $">
+            <button class="boton sm claro" onclick="aplicarFiltros()">Filtrar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-productos" id="lista-productos"></div>
+    </div>
+  </section>
+
+  <!-- 7. Simulador de Valor y Graduación PSA -->
+  <section id="simulador">
+    <div class="contenedor">
+      <h2 class="titulo">Tasador Interactivo de Cartas (Calculadora PSA)</h2>
+      <p class="subtitulo">Estima el valor potencial de tus cartas según su estado de conservación físico.</p>
+
+      <div class="simulador-box">
+        <div class="sim-form">
+          <label>Nombre de la Carta o Edición
+            <input type="text" id="sim-nombre" placeholder="Ej. Charizard Base Set, Greninja SIR">
+          </label>
+          <label>Valor base aproximado sin graduar (MXN)
+            <input type="number" id="sim-valor-base" value="500">
+          </label>
+          <label>Estado de la superficie y esquinas
+            <select id="sim-estado">
+              <option value="1.8">Perfecto / Impecable (Posible PSA 10 Gemini Gem Mint)</option>
+              <option value="1.4">Excelente (Esquinas intactas, Posible PSA 9 Mint)</option>
+              <option value="1.1">Bueno / Poco Uso (Near Mint PSA 7-8)</option>
+              <option value="0.8">Jugado / Leves detalles (PSA 5-6)</option>
+              <option value="0.5">Dañado / Marcas visibles (PSA 1-4)</option>
+            </select>
+          </label>
+          <label>
+            <input type="checkbox" id="sim-centrado" checked style="width:auto; display:inline;"> Centrado simétrico verificado
+          </label>
+          <button class="boton" onclick="calcularValorPSA()">Calcular Estimación PSA</button>
+        </div>
+
+        <div class="sim-resultado">
+          <span style="color:var(--gris); font-size:0.9rem;">VALOR ESTIMADO TRAS GRADUACIÓN</span>
+          <div class="val-destacado" id="res-val-psa">$0.00 MXN</div>
+          <p id="res-nota-psa" style="color:var(--gris); font-size:0.85rem; margin-top:8px;">Ingresa los datos para obtener la cotización calculada por algoritmo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Comparador de Cartas -->
+  <section id="comparador">
+    <div class="contenedor">
+      <h2 class="titulo">Comparador de Cartas Lado a Lado</h2>
+      <p class="subtitulo">Compara atributos clave entre dos cartas del catálogo antes de tomar una decisión.</p>
+
+      <div class="comparador-selects">
+        <select id="select-comp-1" onchange="renderComparador()"></select>
+        <select id="select-comp-2" onchange="renderComparador()"></select>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="tabla-comparativa">
+          <thead>
+            <tr>
+              <th>Atributo</th>
+              <th id="comp-head-1">Carta 1</th>
+              <th id="comp-head-2">Carta 2</th>
+            </tr>
+          </thead>
+          <tbody id="comp-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Sección de Inspección Detallada -->
+  <section id="caracteristicas">
+    <div class="contenedor">
+      <h2 class="titulo">Inspección de Autenticidad</h2>
+      <p class="subtitulo">Selecciona "Inspeccionar" en cualquier producto para verificar hologramas y especificaciones.</p>
+
+      <div class="detalle-grid">
+        <div class="detalle-foto" id="detalle-foto"></div>
+        <div>
+          <h3 id="detalle-nombre" style="font-size: 1.6rem; color: #fff;"></h3>
+          <p id="detalle-resumen" style="color: var(--gris); margin-top: 6px;"></p>
+          <table class="table-specs"><tbody id="detalle-specs"></tbody></table>
+          <div style="margin-top:20px; display:flex; gap:12px;" id="detalle-acciones"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. Reseñas de Clientes + Formulario -->
+  <section id="resenas">
+    <div class="contenedor">
+      <h2 class="titulo">Experiencias de la Comunidad</h2>
+      <p class="subtitulo">Reseñas reales verificadas de compradores de PokéShop Greninja.</p>
+
+      <div class="grid-resenas" id="grid-resenas"></div>
+
+      <!-- Formulario para agregar reseña -->
+      <form id="form-resena" style="margin-top: 30px;">
+        <h3 style="color:#fff; font-size:1.1rem;">Déjanos tu opinión</h3>
+        <div class="form-row">
+          <label>Tu Nombre
+            <input type="text" id="res-nombre" placeholder="Ej. Entrenador Ash" required>
+          </label>
+          <label>Calificación
+            <select id="res-estrellas">
+              <option value="5">⭐⭐⭐⭐⭐ (5/5)</option>
+              <option value="4">⭐⭐⭐⭐ (4/5)</option>
+              <option value="3">⭐⭐⭐ (3/5)</option>
+            </select>
+          </label>
+        </div>
+        <label>Comentario
+          <textarea id="res-comentario" placeholder="¿Qué tal llegó tu paquete?" required></textarea>
+        </label>
+        <button class="boton sm rosa" type="submit" style="justify-self: start;">Publicar Reseña</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 11. Centro de Ayuda & Ticket -->
+  <section id="ayuda">
+    <div class="contenedor">
+      <h2 class="titulo">Centro de Soporte y FAQ</h2>
+      <p class="subtitulo">Atención al cliente personalizada y resolución de dudas sobre envíos.</p>
+
+      <div class="ayuda-layout">
+        <div>
+          <div class="opciones-contacto">
+            <div class="card-contacto"><h3>💬 Chat Directo WhatsApp</h3><p>+52 961 132 1702 (Respuesta en &lt; 15 min)</p></div>
+            <div class="card-contacto" style="border-left-color: var(--rosa);"><h3>✉️ Correo de Soporte</h3><p>contacto@pokeshopgreninja.mx</p></div>
+          </div>
+
+          <h3 style="margin-top: 24px; color:#fff;">Preguntas Frecuentes</h3>
+          <details><summary>¿Las cartas cuentan con certificado de autenticidad?</summary><p>Todas las cartas graduadas cuentan con su número de certificación verificable directamente en la base de datos de PSA, Beckett o CGC.</p></details>
+          <details><summary>¿Cuál es el costo y tiempo de envío?</summary><p>Realizamos envíos a todo México vía DHL o FedEx Express (1 a 3 días hábiles). Envío GRATIS en compras mayores a $999 MXN.</p></details>
+          <details><summary>¿Cómo vienen empaquetadas las cartas?</summary><p>Cada carta suelta se envía con funda suave (sleeve), protector rígido Toploader, sellada en bolsa de equipo y caja reforzada con burbujas.</p></details>
+        </div>
+
+        <!-- Formulario Ticket -->
+        <form id="form-ticket" novalidate>
+          <h3 style="color:#fff;">Generar Ticket de Soporte</h3>
+          <div class="form-row">
+            <label>Nombre Completo
+              <input type="text" id="t-nombre">
+              <span class="msg-error" id="err-t-nombre"></span>
+            </label>
+            <label>Correo Electrónico
+              <input type="email" id="t-correo">
+              <span class="msg-error" id="err-t-correo"></span>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Producto Relacionado
+              <select id="t-producto"></select>
+            </label>
+            <label>Tipo de Solicitud
+              <select id="t-tipo">
+                <option>Rastrear Pedido</option>
+                <option>Consulta de Stock</option>
+                <option>Garantía / Devolución</option>
+              </select>
+            </label>
+          </div>
+          <label>Mensaje o Detalle del Problema
+            <textarea id="t-mensaje"></textarea>
+            <span class="msg-error" id="err-t-mensaje"></span>
+          </label>
+          <button class="boton" type="submit">Generar Ticket de Atención</button>
+          <div class="box-confirmacion" id="conf-ticket"></div>
+        </form>
+      </div>
+
+      <!-- 12. Newsletter VIP -->
+      <div class="vip-banner">
+        <h3 style="font-size: 1.8rem; color:#fff;">Únete al Club VIP Greninja</h3>
+        <p style="color:var(--gris); margin: 8px 0 20px;">Suscríbete para recibir alertas instantáneas de restock de cartas legendarias y obtiene un cupón de 15% OFF.</p>
+        <form class="form-row" style="background:transparent; border:0; padding:0; max-width:500px; margin:0 auto;" onsubmit="unirseVIP(event)">
+          <input type="email" id="vip-email" placeholder="Tu correo electrónico..." required style="background:var(--panel);">
+          <button class="boton rosa" type="submit">Obtener Mi Cupón</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="contenedor">
+    <p>© 2026 PokéShop Greninja. Tienda especializada en Pokémon TCG. No afiliado directamente con Nintendo o The Pokémon Company.</p>
+  </div>
+</footer>
+
+<!-- 6. Carrito Lateral (Drawer) -->
+<div class="drawer-overlay" id="drawer-overlay">
+  <div class="drawer-carrito">
+    <div class="drawer-header">
+      <h3 style="color:#fff;">Tu Carrito de Compras</h3>
+      <button class="btn-cerrar" id="btn-cerrar-drawer">&times;</button>
+    </div>
+    <div class="drawer-body" id="drawer-items"></div>
+    <div class="drawer-footer">
+      <div class="coupon-box">
+        <input type="text" id="input-cupon" placeholder="Código de cupón (Ej. GRENINJA)">
+        <button class="boton sm claro" onclick="aplicarCupon()">Aplicar</button>
+      </div>
+      <div class="linea-resumen"><span>Subtotal:</span><span id="cart-subtotal">$0.00</span></div>
+      <div class="linea-resumen"><span>Descuento:</span><span id="cart-descuento">-$0.00</span></div>
+      <div class="linea-resumen"><span>Envío:</span><span id="cart-envio">$0.00</span></div>
+      <div class="linea-resumen total"><span>Total:</span><span id="cart-total">$0.00</span></div>
+      <button class="boton rosa" style="width:100%;" onclick="abrirCheckout()">Proceder al Pago 💳</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Checkout / Confirmación de Compra -->
+<div class="modal-overlay" id="modal-checkout">
+  <div class="modal-card">
+    <h3 style="color:#fff; font-size:1.4rem; margin-bottom:12px;">Simulador de Pago Seguro</h3>
+    <p style="color:var(--gris); font-size:0.9rem; margin-bottom:20px;">Estás a punto de completar tu pedido en PokéShop Greninja.</p>
+    <form onsubmit="completarPago(event)" style="padding:0; border:0; background:transparent;">
+      <label>Nombre en la Tarjeta
+        <input type="text" placeholder="Ej. Ash Ketchum" required>
+      </label>
+      <label style="margin-top:10px;">Número de Tarjeta (Simulado)
+        <input type="text" placeholder="4532 •••• •••• 8890" required>
+      </label>
+      <div class="form-row" style="margin-top:10px;">
+        <label>Expiración<input type="text" placeholder="MM/AA" required></label>
+        <label>CVV<input type="password" placeholder="123" required></label>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="boton rosa" type="submit" style="flex:1;">Pagar Ahora</button>
+        <button class="boton claro" type="button" onclick="cerrarCheckout()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Éxito de Compra -->
+<div class="modal-overlay" id="modal-exito">
+  <div class="modal-card" style="text-align:center;">
+    <div style="font-size:3.5rem;">🎉</div>
+    <h3 style="color:var(--verde); font-size:1.5rem; margin-block:10px;">¡Pago Realizado con Éxito!</h3>
+    <p style="color:var(--gris); font-size:0.95rem;">Tu pedido ha sido procesado. Hemos enviado el comprobante a tu correo. Número de Orden: <strong id="num-orden" style="color:#fff;"></strong></p>
+    <button class="boton" style="margin-top:20px;" onclick="cerrarModalExito()">Entendido</button>
+  </div>
+</div>
+
+<script>
+  // ---- BASE DE DATOS DE PRODUCTOS DE CARTAS POKÉMON ----
+  const productos = [
+    {
+      id: 1,
+      nombre: "Greninja ex (SIR - Special Art)",
+      cat: "Ultra Raras",
+      precio: 1499,
+      stock: 3,
+      rareza: "SIR",
+      imagen: "https://images.pokemontcg.io/sv3pt5/198_hires.png",
+      resumen: "Arte alternativo especial impreso en acabado holográfico de alta textura.",
+      specs: { Rareza: "Special Illustration Rare", Edición: "Scarlet & Violet 151", HP: "310", Idioma: "Español", Estado: "Gem Mint (PSA 10)", Tipo: "Agua" }
+    },
+    {
+      id: 2,
+      nombre: "Charizard ex (Obsidian Flames)",
+      cat: "Ultra Raras",
+      precio: 1899,
+      stock: 2,
+      rareza: "Ultra Rara",
+      imagen: "https://images.pokemontcg.io/sv3/215_hires.png",
+      resumen: "Una de las cartas con mayor demanda en el meta actual y coleccionismo.",
+      specs: { Rareza: "Double Rare Ultra", Edición: "Obsidian Flames", HP: "330", Idioma: "Español", Estado: "Near Mint", Tipo: "Oscuro / Fuego" }
+    },
+    {
+      id: 3,
+      nombre: "Umbreon VMAX (Alternate Art)",
+      cat: "Ultra Raras",
+      precio: 3200,
+      stock: 1,
+      rareza: "Secret Rare",
+      imagen: "https://images.pokemontcg.io/swsh7/215_hires.png",
+      resumen: "El legendario Moonbreon de Evolving Skies. Obra maestra de arte.",
+      specs: { Rareza: "Secret Art Rare", Edición: "Evolving Skies", HP: "310", Idioma: "Inglés", Estado: "Graduada PSA 9", Tipo: "Oscuro" }
+    },
+    {
+      id: 4,
+      nombre: "Profesor Arven (Full Art Trainer)",
+      cat: "Entrenador",
+      precio: 450,
+      stock: 8,
+      rareza: "Full Art",
+      imagen: "https://images.pokemontcg.io/sv1/249_hires.png",
+      resumen: "Carta clave competitiva para buscar objetos y herramientas en tu mazo.",
+      specs: { Rareza: "Ultra Rare Trainer", Edición: "Scarlet & Violet Base", HP: "N/A", Idioma: "Español", Estado: "Mint", Tipo: "Entrenador Support" }
+    },
+    {
+      id: 5,
+      nombre: "Caja Booster Box - Destinos de Paldea",
+      cat: "Cajas",
+      precio: 2599,
+      stock: 5,
+      rareza: "Sellado",
+      imagen: "https://images.pokemontcg.io/sv4pt5/logo.png",
+      resumen: "Caja sellada de fábrica con 36 sobres de expansión Pokémon Shiny.",
+      specs: { Contenido: "36 Sobres sellados", Edición: "Paldean Fates", HP: "N/A", Idioma: "Español", Estado: "Nuevo de Fábrica", Tipo: "Caja de Sobres" }
+    },
+    {
+      id: 6,
+      nombre: "Pack Protectores Toploader Rígidos (x50)",
+      cat: "Accesorios",
+      precio: 320,
+      stock: 15,
+      rareza: "Accesorio",
+      imagen: "https://images.pokemontcg.io/base1/4.png",
+      resumen: "Protectores ultraclaros con protección UV para preservar el valor de tus cartas.",
+      specs: { Cantidad: "50 Piezas", Material: "PVC Rígido sin ácido", HP: "N/A", Idioma: "N/A", Estado: "Nuevo", Tipo: "Protección" }
+    }
+  ];
+
+  // ---- ESTADO GLOBAL DE LA APLICACIÓN ----
+  let carrito = [];
+  let wishlist = [];
+  let categoriaActiva = "Todos";
+  let cuponAplicado = false;
+  const DESCUENTO_CUPON = 0.15; // 15%
+
+  const formatoMXN = n => n.toLocaleString("es-MX", { style: "currency", currency: "MXN" });
+
+  // ---- 1. TEMPORIZADOR FLASH SALE ----
+  function iniciarTemporizador() {
+    let tiempo = 5 * 3600 + 42 * 60 + 19;
+    const el = document.getElementById("flash-clock");
+    setInterval(() => {
+      tiempo--;
+      if (tiempo < 0) tiempo = 24 * 3600;
+      const h = String(Math.floor(tiempo / 3600)).padStart(2, '0');
+      const m = String(Math.floor((tiempo % 3600) / 60)).padStart(2, '0');
+      const s = String(tiempo % 60).padStart(2, '0');
+      el.textContent = `${h}:${m}:${s}`;
+    }, 1000);
+  }
+
+  // ---- 3 & 4. FILTROS, BUSCADOR Y SUGERENCIAS ----
+  function initFiltrosYCats() {
+    const cats = ["Todos", ...new Set(productos.map(p => p.cat))];
+    const cont = document.getElementById("filtros-cats");
+    cont.innerHTML = cats.map(c => `
+      <button class="filtro-btn ${c === categoriaActiva ? 'activo' : ''}" onclick="filtrarCategoria('${c}')">${c}</button>
+    `).join("");
+  }
+
+  function filtrarCategoria(cat) {
+    categoriaActiva = cat;
+    initFiltrosYCats();
+    aplicarFiltros();
+  }
+
+  function aplicarFiltros() {
+    const busqueda = document.getElementById("input-buscar").value.toLowerCase();
+    const min = parseFloat(document.getElementById("precio-min").value) || 0;
+    const max = parseFloat(document.getElementById("precio-max").value) || Infinity;
+    const orden = document.getElementById("select-orden").value;
+
+    let lista = productos.filter(p => {
+      const matchCat = categoriaActiva === "Todos" || p.cat === categoriaActiva;
+      const matchText = p.nombre.toLowerCase().includes(busqueda) || p.resumen.toLowerCase().includes(busqueda);
+      const matchPrecio = p.precio >= min && p.precio <= max;
+      return matchCat && matchText && matchPrecio;
+    });
+
+    if (orden === "precio-asc") lista.sort((a,b) => a.precio - b.precio);
+    if (orden === "precio-desc") lista.sort((a,b) => b.precio - a.precio);
+    if (orden === "nombre") lista.sort((a,b) => a.nombre.localeCompare(b.nombre));
+
+    renderProductos(lista);
+  }
+
+  // Auto-completado / Sugerencias
+  document.getElementById("input-buscar").addEventListener("input", (e) => {
+    const val = e.target.value.toLowerCase().trim();
+    const box = document.getElementById("sugerencias-box");
+    if (!val) { box.style.display = "none"; aplicarFiltros(); return; }
+
+    const sug = productos.filter(p => p.nombre.toLowerCase().includes(val));
+    if (sug.length > 0) {
+      box.style.display = "block";
+      box.innerHTML = sug.map(s => `
+        <div class="sugerencia-item" onclick="seleccionarSugerencia('${s.nombre}')">🔍 ${s.nombre}</div>
+      `).join("");
+    } else {
+      box.style.display = "none";
+    }
+    aplicarFiltros();
+  });
+
+  function seleccionarSugerencia(nombre) {
+    document.getElementById("input-buscar").value = nombre;
+    document.getElementById("sugerencias-box").style.display = "none";
+    aplicarFiltros();
+  }
+
+  // ---- 5. RENDERIZAR PRODUCTOS ----
+  function renderProductos(lista) {
+    const cont = document.getElementById("lista-productos");
+    if (lista.length === 0) {
+      cont.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--gris); padding:40px;">No se encontraron cartas que coincidan con la búsqueda.</p>`;
+      return;
+    }
+
+    cont.innerHTML = lista.map(p => {
+      const inWish = wishlist.includes(p.id);
+      return `
+      <article class="card-producto">
+        <div class="badge-top">
+          <span class="tag">${p.cat}</span>
+          <span class="tag rareza">${p.rareza}</span>
+        </div>
+        <button class="btn-wishlist ${inWish ? 'activa' : ''}" onclick="toggleWishlist(${p.id})" title="Guardar en lista de deseos">
+          ${inWish ? '❤️' : '🤍'}
+        </button>
+        <div class="card-foto">
+          <img src="${p.imagen}" alt="${p.nombre}">
+        </div>
+        <div class="card-body">
+          <span class="card-cat">${p.specs.Edición || 'Edición Especial'}</span>
+          <h3 class="card-titulo">${p.nombre}</h3>
+          <span class="card-stock">✓ ${p.stock} disponibles en tienda</span>
+          <div class="card-precio">${formatoMXN(p.precio)}</div>
+          <div class="card-acciones">
+            <button class="boton sm claro" onclick="mostrarDetalle(${p.id}, true)">Inspeccionar</button>
+            <button class="boton sm rosa" onclick="agregarAlCarrito(${p.id})">+ Carrito</button>
+          </div>
+        </div>
+      </article>`;
+    }).join("");
+  }
+
+  // ---- 6. CARRITO & WISHLIST DRAWER ----
+  function agregarAlCarrito(id) {
+    const item = carrito.find(x => x.id === id);
+    const prod = productos.find(x => x.id === id);
+    if (item) {
+      if (item.cant < prod.stock) item.cant++;
+      else alert("Has alcanzado el límite de stock disponible para esta carta.");
+    } else {
+      carrito.push({ id, cant: 1 });
+    }
+    actualizarCarritoUI();
+    abrirDrawer();
+  }
+
+  function cambiarCant(id, delta) {
+    const item = carrito.find(x => x.id === id);
+    const prod = productos.find(x => x.id === id);
+    if (!item) return;
+
+    item.cant += delta;
+    if (item.cant > prod.stock) {
+      item.cant = prod.stock;
+      alert("Límite de stock alcanzado.");
+    }
+    if (item.cant <= 0) {
+      carrito = carrito.filter(x => x.id !== id);
+    }
+    actualizarCarritoUI();
+  }
+
+  function actualizarCarritoUI() {
+    const countEl = document.getElementById("cart-count");
+    const totalCant = carrito.reduce((a, b) => a + b.cant, 0);
+    countEl.textContent = totalCant;
+
+    const drawerBody = document.getElementById("drawer-items");
+    if (carrito.length === 0) {
+      drawerBody.innerHTML = `<p style="text-align:center; color:var(--gris); margin-top:40px;">Tu carrito está vacío 🛒</p>`;
+    } else {
+      drawerBody.innerHTML = carrito.map(c => {
+        const p = productos.find(x => x.id === c.id);
+        return `
+        <div class="item-carrito">
+          <img src="${p.imagen}" alt="${p.nombre}">
+          <div class="item-info">
+            <div class="item-title">${p.nombre}</div>
+            <div class="item-price">${formatoMXN(p.precio)}</div>
+            <div class="controles-cant">
+              <button class="btn-cant" onclick="cambiarCant(${p.id}, -1)">-</button>
+              <span style="font-size:0.9rem; font-weight:700;">${c.cant}</span>
+              <button class="btn-cant" onclick="cambiarCant(${p.id}, 1)">+</button>
+            </div>
+          </div>
+          <button class="btn-cerrar" onclick="cambiarCant(${p.id}, -${c.cant})" title="Eliminar">&times;</button>
+        </div>`;
+      }).join("");
+    }
+
+    // Cálculos Financieros
+    const subtotal = carrito.reduce((sum, item) => {
+      const p = productos.find(x => x.id === item.id);
+      return sum + (p.precio * item.cant);
+    }, 0);
+
+    const descuento = cuponAplicado ? subtotal * DESCUENTO_CUPON : 0;
+    const envio = subtotal > 999 || subtotal === 0 ? 0 : 150;
+    const total = subtotal - descuento + envio;
+
+    document.getElementById("cart-subtotal").textContent = formatoMXN(subtotal);
+    document.getElementById("cart-descuento").textContent = `-${formatoMXN(descuento)}`;
+    document.getElementById("cart-envio").textContent = envio === 0 ? "GRATIS" : formatoMXN(envio);
+    document.getElementById("cart-total").textContent = formatoMXN(total);
+  }
+
+  function aplicarCupon() {
+    const input = document.getElementById("input-cupon").value.trim().toUpperCase();
+    if (input === "GRENINJA") {
+      cuponAplicado = true;
+      alert("¡Cupón 'GRENINJA' aplicado exitosamente! 15% de descuento.");
+      actualizarCarritoUI();
+    } else {
+      alert("Código de cupón inválido o expirado.");
+    }
+  }
+
+  function toggleWishlist(id) {
+    if (wishlist.includes(id)) {
+      wishlist = wishlist.filter(x => x !== id);
+    } else {
+      wishlist.push(id);
+    }
+    document.getElementById("wishlist-count").textContent = wishlist.length;
+    aplicarFiltros();
+  }
+
+  // Controles de Drawer
+  const drawerOverlay = document.getElementById("drawer-overlay");
+  function abrirDrawer() { drawerOverlay.classList.add("activo"); }
+  function cerrarDrawer() { drawerOverlay.classList.remove("activo"); }
+  document.getElementById("btn-carrito-toggle").addEventListener("click", abrirDrawer);
+  document.getElementById("btn-cerrar-drawer").addEventListener("click", cerrarDrawer);
+
+  // Modal Checkout
+  function abrirCheckout() {
+    if (carrito.length === 0) { alert("Agrega al menos una carta al carrito primero."); return; }
+    cerrarDrawer();
+    document.getElementById("modal-checkout").classList.add("activo");
+  }
+  function cerrarCheckout() { document.getElementById("modal-checkout").classList.remove("activo"); }
+  
+  function completarPago(e) {
+    e.preventDefault();
+    cerrarCheckout();
+    carrito = [];
+    actualizarCarritoUI();
+    document.getElementById("num-orden").textContent = "ORD-" + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById("modal-exito").classList.add("activo");
+  }
+  function cerrarModalExito() { document.getElementById("modal-exito").classList.remove("activo"); }
+
+  // ---- 7. SIMULADOR PSA ----
+  function calcularValorPSA() {
+    const base = parseFloat(document.getElementById("sim-valor-base").value) || 0;
+    const mult = parseFloat(document.getElementById("sim-estado").value);
+    const centrado = document.getElementById("sim-centrado").checked ? 1.2 : 1.0;
+    
+    const estimado = base * mult * centrado;
+    document.getElementById("res-val-psa").textContent = formatoMXN(estimado);
+    document.getElementById("res-nota-psa").textContent = `Valor calculado multiplicando el estado físico x${mult} y bonificación de centrado.`;
+  }
+
+  // ---- 8. COMPARADOR ----
+  function initComparador() {
+    const s1 = document.getElementById("select-comp-1");
+    const s2 = document.getElementById("select-comp-2");
+    
+    const opts = productos.map(p => `<option value="${p.id}">${p.nombre}</option>`).join("");
+    s1.innerHTML = opts;
+    s2.innerHTML = opts;
+    if (productos.length > 1) s2.value = productos[1].id;
+    
+    renderComparador();
+  }
+
+  function renderComparador() {
+    const id1 = parseInt(document.getElementById("select-comp-1").value);
+    const id2 = parseInt(document.getElementById("select-comp-2").value);
+    
+    const p1 = productos.find(x => x.id === id1);
+    const p2 = productos.find(x => x.id === id2);
+
+    document.getElementById("comp-head-1").textContent = p1.nombre;
+    document.getElementById("comp-head-2").textContent = p2.nombre;
+
+    const filas = [
+      ["Precio", formatoMXN(p1.precio), formatoMXN(p2.precio)],
+      ["Categoría", p1.cat, p2.cat],
+      ["Rareza", p1.rareza, p2.rareza],
+      ["Edición", p1.specs.Edición, p2.specs.Edición],
+      ["Puntos de Vida (HP)", p1.specs.HP, p2.specs.HP],
+      ["Estado Físico", p1.specs.Estado, p2.specs.Estado],
+      ["Stock Disponible", `${p1.stock} unidades`, `${p2.stock} unidades`]
+    ];
+
+    document.getElementById("comp-body").innerHTML = filas.map(f => `
+      <tr>
+        <td>${f[0]}</td>
+        <td>${f[1]}</td>
+        <td>${f[2]}</td>
+      </tr>
+    `).join("");
+  }
+
+  // ---- 9. INSPECCIÓN DE CARTA ----
+  function mostrarDetalle(id, scroll) {
+    const p = productos.find(x => x.id === id);
+    document.getElementById("detalle-foto").innerHTML = `<img src="${p.imagen}" alt="${p.nombre}">`;
+    document.getElementById("detalle-nombre").textContent = `${p.nombre} · ${formatoMXN(p.precio)}`;
+    document.getElementById("detalle-resumen").textContent = p.resumen;
+    
+    document.getElementById("detalle-specs").innerHTML = Object.entries(p.specs).map(([k,v]) => `
+      <tr><th>${k}</th><td>${v}</td></tr>
+    `).join("");
+
+    document.getElementById("detalle-acciones").innerHTML = `
+      <button class="boton rosa" onclick="agregarAlCarrito(${p.id})">Añadir al Carrito (${formatoMXN(p.precio)})</button>
+    `;
+
+    if (scroll) document.getElementById("caracteristicas").scrollIntoView();
+  }
+
+  // ---- 10. RESEÑAS ----
+  const reseñasData = [
+    { nombre: "Mateo R. (Guadalajara)", estrellas: 5, texto: "Excelente empaquetado. El Greninja ex llegó con su toploader y sello de seguridad impecable." },
+    { nombre: "Fernanda L. (CDMX)", estrellas: 5, texto: "La atención por WhatsApp para rastrear mi pedido fue súper rápida. 100% recomendado." }
+  ];
+
+  function renderReseñas() {
+    const cont = document.getElementById("grid-resenas");
+    cont.innerHTML = reseñasData.map(r => `
+      <div class="card-resena">
+        <div class="estrellas">${'⭐'.repeat(r.estrellas)}</div>
+        <p style="color:var(--gris); font-size:0.95rem;">"${r.texto}"</p>
+        <div style="font-weight:700; color:#fff; margin-top:auto; font-size:0.88rem;">- ${r.nombre}</div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("form-resena").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nombre = document.getElementById("res-nombre").value;
+    const estrellas = parseInt(document.getElementById("res-estrellas").value);
+    const texto = document.getElementById("res-comentario").value;
+
+    reseñasData.unshift({ nombre, estrellas, texto });
+    renderReseñas();
+    e.target.reset();
+    alert("¡Gracias por compartir tu reseña con la comunidad!");
+  });
+
+  // ---- 11. FORMULARIO DE TICKETS ----
+  const selectTProd = document.getElementById("t-producto");
+  selectTProd.innerHTML = `<option>Sin producto específico</option>` + productos.map(p => `<option>${p.nombre}</option>`).join("");
+
+  document.getElementById("form-ticket").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const nom = document.getElementById("t-nombre");
+    const cor = document.getElementById("t-correo");
+    const msg = document.getElementById("t-mensaje");
+
+    let err = false;
+    if (nom.value.trim().length < 3) { document.getElementById("err-t-nombre").textContent = "Nombre requerido."; err = true; }
+    else document.getElementById("err-t-nombre").textContent = "";
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cor.value)) { document.getElementById("err-t-correo").textContent = "Correo no válido."; err = true; }
+    else document.getElementById("err-t-correo").textContent = "";
+
+    if (msg.value.trim().length < 10) { document.getElementById("err-t-mensaje").textContent = "Describe con al menos 10 caracteres."; err = true; }
+    else document.getElementById("err-t-mensaje").textContent = "";
+
+    if (err) return;
+
+    const folio = "PK-" + Math.floor(10000 + Math.random() * 90000);
+    const box = document.getElementById("conf-ticket");
+    box.style.display = "block";
+    box.innerHTML = `¡Ticket generado correctamente! Tu Folio de atención es: <strong>${folio}</strong>. Te responderemos a la brevedad.`;
+    e.target.reset();
+  });
+
+  // ---- 12. CLUB VIP ----
+  function unirseVIP(e) {
+    e.preventDefault();
+    const email = document.getElementById("vip-email").value;
+    alert(`¡Bienvenido al Club VIP PokéShop! Te hemos enviado tu cupón 'GRENINJA' de 15% OFF a: ${email}`);
+    e.target.reset();
+  }
+
+  // ---- INICIALIZACIÓN DE LA PÁGINA ----
+  window.onload = function() {
+    iniciarTemporizador();
+    initFiltrosYCats();
+    aplicarFiltros();
+    initComparador();
+    mostrarDetalle(1, false);
+    renderReseñas();
+    calcularValorPSA();
+  };
+</script>
+</body>
+</html>
